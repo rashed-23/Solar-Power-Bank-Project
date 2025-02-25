@@ -1,0 +1,50 @@
+#include <Wire.h>
+#include <Adafruit_GFX.h>
+#include <Adafruit_SSD1306.h>
+
+// Initialize the OLED display
+Adafruit_SSD1306 display(128, 64, &Wire);
+
+void setup() {
+  Serial.begin(9600);
+  display.begin(SSD1306_SWITCHCAPVCC, 0x3C);
+  pinMode(A0, INPUT);
+  display.clearDisplay();
+  display.setTextSize(1); 
+  display.setTextColor(WHITE);
+  display.print("\n Solar Charger Power     Bank Project\n\n      ");
+  display.fillRect(40, 30, 57, 12, WHITE);
+  display.setTextColor(BLACK);
+  display.print(" Group: 03 ");
+  display.display();
+  delay(5000);
+  display.clearDisplay();
+  display.setTextColor(WHITE);
+  display.setCursor(20, 15);
+  display.print("Solar Charging ");
+  display.display(); 
+}
+void loop() {
+  int val = analogRead(A0);
+  delay(100);
+  Serial.println(val);
+  if (val > 50) on();
+  else off();
+  delay(100);
+}
+void on() {
+  display.fillRect(41, 34, 46, 20, WHITE);
+  display.setTextSize(2);
+  display.setTextColor(BLACK);
+  display.setCursor(53, 37);
+  display.print("ON");
+  display.display();
+}
+void off() {
+  display.fillRect(41, 34, 46, 20, WHITE);
+  display.setCursor(42, 37);
+  display.setTextSize(2);
+  display.setTextColor(BLACK);
+  display.print("OFF!");
+  display.display();
+}
